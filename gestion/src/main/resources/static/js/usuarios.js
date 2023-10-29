@@ -11,11 +11,14 @@ $(document).ready(function() {
  'Accept':'application/JSON',
  'Content-Type':'application/json'
  },
-
  })
+let listadoHTML='';
+ const usuarios = await request.json();
+ console.log(usuarios);
+ for(let usuario of usuarios){
+ let usuarioHTML = '<tr><td>123456</td><td>'+usuario.nombre +' '+ usuario.apellido+'</td><td>'+usuario.telefono+'</td><td>'+usuario.email+'</td><td><a href="#" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td></tr>'
+ listadoHTML += usuarioHTML;
+ }
 
- const usuarios = request.json();
- let usuario = '<tr><td>123456</td><td>Denis Roldan1</td><td>321321321</td><td>denis@denis.com</td><td><a href="#" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a></td></tr>'
-
- document.querySelector('#usuarios tbody').outerHTML = usuario;
+ document.querySelector('#usuarios tbody').outerHTML = listadoHTML;
 }
