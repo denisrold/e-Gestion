@@ -27,6 +27,10 @@ let listadoHTML='';
 }
 
 async function deleteUser(id){
+if(!confirm("¿Desea eliminar el usuario?")){
+return
+}
+
 const deleteMethod = {
  method: 'DELETE',
  headers: {
@@ -34,4 +38,6 @@ const deleteMethod = {
  },
 }
 const request = await fetch('http://localhost:8080/api/usuarios/'+id, deleteMethod)
+
+location.reload();
 }
