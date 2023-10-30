@@ -3,10 +3,7 @@ package com.egestion.gestion.controllers;
 import com.egestion.gestion.dao.UsuarioDaoimp;
 import com.egestion.gestion.models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,10 @@ public class UsuarioController {
     @RequestMapping(value = "api/allusuarios", method = RequestMethod.GET)
     public List<Usuario> obtenerUsuarios(){
        return usuarioDao.getUsuario();
+    }
+    @RequestMapping(value = "api/allusuarios", method = RequestMethod.POST)
+    public void registrarUsuarios(@RequestBody Usuario usuario){
+        usuarioDao.registrar(usuario);
     }
 
     @RequestMapping(value = "api/usuarios/{id}", method = RequestMethod.DELETE)
