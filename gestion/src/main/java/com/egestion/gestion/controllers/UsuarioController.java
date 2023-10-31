@@ -3,6 +3,7 @@ package com.egestion.gestion.controllers;
 import com.egestion.gestion.dao.UsuarioDaoimp;
 import com.egestion.gestion.models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,10 +30,18 @@ public class UsuarioController {
     }
     @RequestMapping(value = "api/regusuarios", method = RequestMethod.POST)
     public void registrarUsuarios(@RequestBody Usuario usuario){
+        //configuration
+        int saltLength = 16;
+        int hashLength = 20;
+        int parallelism = 2;
+        int memory = 1024;
+        int iterations = 2;
+
+        Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(saltLength, hashLength, parallelism, memory, iterations);
+        String hashedPassword = argon2.encode(usuario.getPassword());
+        usuario.setPassword(hashedPassword);
         usuarioDao.registrar(usuario);
     }
-
-
 
     @RequestMapping(value = "api/usuarios/{id}", method = RequestMethod.DELETE)
     public void eliminarUsuario(@PathVariable Long id){
