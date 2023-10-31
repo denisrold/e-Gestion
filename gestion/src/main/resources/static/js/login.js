@@ -15,7 +15,9 @@ const request = await fetch('http://localhost:8080/api/login', {
   body: JSON.stringify(datos)
 });
     const response = await request.text();
-    if(response == "Ok"){
+    if(response != "FAIL"){
+    localStorage.token = response;
+    localStorage.email = datos.email;
         window.location.href="usuarios.html"}
     else{
         alert("Credenciales incorrectas, por favor intente nuevamente")

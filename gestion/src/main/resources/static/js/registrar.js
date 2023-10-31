@@ -23,5 +23,6 @@ const request = await fetch('http://localhost:8080/api/regusuarios', {
   },
   body: JSON.stringify(datos)
 });
-
+  alert('Se ha registrado correctamente!')
+   window.location.href="login.html"
 }

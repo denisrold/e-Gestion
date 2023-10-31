@@ -31,13 +31,13 @@ public class UsuarioDaoimp implements usuarioDao{
     }
 
     @Override
-    public boolean verificarEmailPassword(Usuario usuario) {
+    public Usuario obtenerUsuarioPorEmailPassword(Usuario usuario) {
         String query = "FROM Usuario WHERE email=:email";
         List<Usuario> lista = entityManager.createQuery(query)
                 .setParameter("email", usuario.getEmail())
                 .getResultList();
 
-        if(lista.isEmpty()){return false;}
+        if(lista.isEmpty()){return null;}
         //configuration
         int saltLength = 16;
         int hashLength = 20;
@@ -47,7 +47,10 @@ public class UsuarioDaoimp implements usuarioDao{
         Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(saltLength, hashLength, parallelism, memory, iterations);
         String hashedPassword = lista.get(0).getPassword();
         String password = usuario.getPassword();
-        return argon2.matches(password,hashedPassword);
+        if(argon2.matches(password,hashedPassword)){
+            return lista.get(0);
+        }
+        return null;
     }
 
 }
