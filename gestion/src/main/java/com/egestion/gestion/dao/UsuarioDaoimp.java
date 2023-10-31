@@ -3,6 +3,7 @@ package com.egestion.gestion.dao;
 import com.egestion.gestion.models.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,14 +32,22 @@ public class UsuarioDaoimp implements usuarioDao{
 
     @Override
     public boolean verificarEmailPassword(Usuario usuario) {
-        String query = "FROM Usuario WHERE email=:email AND password=:password ";
+        String query = "FROM Usuario WHERE email=:email";
         List<Usuario> lista = entityManager.createQuery(query)
                 .setParameter("email", usuario.getEmail())
-                .setParameter("password",usuario.getPassword())
                 .getResultList();
 
-    return !lista.isEmpty();
+        if(lista.isEmpty()){return false;}
+        //configuration
+        int saltLength = 16;
+        int hashLength = 20;
+        int parallelism = 2;
+        int memory = 1024;
+        int iterations = 2;
+        Argon2PasswordEncoder argon2 = new Argon2PasswordEncoder(saltLength, hashLength, parallelism, memory, iterations);
+        String hashedPassword = lista.get(0).getPassword();
+        String password = usuario.getPassword();
+        return argon2.matches(password,hashedPassword);
     }
-
 
 }
