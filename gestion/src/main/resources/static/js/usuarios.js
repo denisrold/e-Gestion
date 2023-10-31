@@ -9,7 +9,8 @@ $(document).ready(function() {
  METHOD: 'GET',
  headers:{
  'Accept':'application/JSON',
- 'Content-Type':'application/json'
+ 'Content-Type':'application/json',
+   'Authorization':localStorage.token
  },
  })
 const usuarios = await request.json();
@@ -26,6 +27,13 @@ let listadoHTML='';
  document.querySelector('#usuarios tbody').outerHTML = listadoHTML;
 }
 
+async function getHeader(){
+return {
+         'Content-Type':'application/json',
+          'Authorization':localStorage.token
+        }
+}
+
 async function deleteUser(id){
 if(!confirm("¿Desea eliminar el usuario?")){
 return
@@ -33,9 +41,7 @@ return
 
 const deleteMethod = {
  method: 'DELETE',
- headers: {
-  'Content-Type':'application/json'
- },
+ headers: getHeader(),
 }
 const request = await fetch('http://localhost:8080/api/usuarios/'+id, deleteMethod)
 
