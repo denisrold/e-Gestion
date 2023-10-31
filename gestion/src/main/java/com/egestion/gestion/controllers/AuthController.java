@@ -22,7 +22,7 @@ public class AuthController {
         Usuario logguedUser = usuarioDao.obtenerUsuarioPorEmailPassword(usuario);
         if(logguedUser != null){
            String token = jwtutil.create(String.valueOf(logguedUser.getId()),String.valueOf(logguedUser.getEmail()));
-            return "Ok";
+            return token;
         }
         return "FAIL";
     }
