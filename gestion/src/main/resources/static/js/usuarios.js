@@ -3,14 +3,14 @@ $(document).ready(function() {
    cargarUsuario();
   $('#usuarios').DataTable();
 });
-
+const token = localStorage.token
  async function cargarUsuario(){
  const request = await fetch('http://localhost:8080/api/allusuarios',{
  METHOD: 'GET',
  headers:{
  'Accept':'application/JSON',
  'Content-Type':'application/json',
-   'Authorization':localStorage.token
+   'Authorization':token,
  },
  })
 const usuarios = await request.json();
@@ -30,7 +30,7 @@ let listadoHTML='';
 async function getHeader(){
 return {
          'Content-Type':'application/json',
-          'Authorization':localStorage.token
+          'Authorization':token,
         }
 }
 

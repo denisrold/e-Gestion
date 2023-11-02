@@ -27,14 +27,14 @@ public class UsuarioController {
         usuario.setTelefono("321321321");
         return usuario;
     }
+
+    private boolean validarToken(String token){
+        String usuarioId = jwtutil.getKey(token);
+        return usuarioId != null;
+    };
     @RequestMapping(value = "api/allusuarios", method = RequestMethod.GET)
     public List<Usuario> obtenerUsuarios(@RequestHeader(value="Authorization") String token){
-
-    String usuarioId = jwtutil.getKey(token);
-
-    if(usuarioId == null){
-        return new ArrayList<>();
-    }
+        if(!validarToken(token)){return null;}
        return usuarioDao.getUsuario();
     }
     @RequestMapping(value = "api/regusuarios", method = RequestMethod.POST)
@@ -53,8 +53,10 @@ public class UsuarioController {
     }
 
     @RequestMapping(value = "api/usuarios/{id}", method = RequestMethod.DELETE)
-    public void eliminarUsuario(@PathVariable Long id){
-       usuarioDao.eliminar(id);
+    public String eliminarUsuario(@RequestHeader(value="Authorization") String token,@PathVariable Long id){
+        if(!validarToken(token)){return null;}
+        usuarioDao.eliminar(id);
+        return "Deleted Ok";
     }
 
 }
