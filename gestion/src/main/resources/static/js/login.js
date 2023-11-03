@@ -23,3 +23,4 @@ const request = await fetch('http://localhost:8080/api/login', {
         alert("Credenciales incorrectas, por favor intente nuevamente")
     }
 }
+

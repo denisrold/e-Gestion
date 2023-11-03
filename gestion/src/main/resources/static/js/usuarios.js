@@ -2,7 +2,12 @@
 $(document).ready(function() {
    cargarUsuario();
   $('#usuarios').DataTable();
+  updateUserEmail();
 });
+function updateUserEmail(){
+document.getElementById('txtEmailUsuario').outerHTML = localStorage.email;
+}
+
 const token = localStorage.token
  async function cargarUsuario(){
  const request = await fetch('http://localhost:8080/api/allusuarios',{
@@ -38,6 +43,8 @@ async function deleteUser(id){
 if(!confirm("¿Desea eliminar el usuario?")){
 return
 }
+
+
 
 const deleteMethod = {
  method: 'DELETE',
